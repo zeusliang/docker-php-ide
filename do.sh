@@ -20,16 +20,9 @@ function creImg(){
 
 # 构建容器
 function creCon(){
-	con_name=php-env
-	volume=/var/www/html/wx
+	con_name=php-ide
 	ports="-p 80:80 -p 8080:8080 -p 8081:8081"
-	if [ -d $volume ]
-	then
-		echo
-	else
-		mkdir -p $volume
-	fi
-	cre_con="docker run -d $ports --name $con_name --privileged -v $volume $build_img"
+	cre_con="docker run -d $ports --name $con_name --privileged  $build_img"
 	if $cre_con
 	then
 		echo '容器构建成功'
@@ -38,7 +31,18 @@ function creCon(){
 	fi
 }
 
-if creImg
-then
-	creCon
-fi
+# 运行脚本
+function run(){
+	if creImg
+	then
+		creCon
+	fi
+}
+
+# docker run -d -p 80:80 -p 8080:8080 -p 8081:8081 --name php-ide --privileged -v /var/www/html/wx:/var/www/html/wx php:7.3.9-apache-stretch-1.0
+# docker rm php-ide -f -v
+# docker inspect php-ide > php-ide
+
+run
+
+
