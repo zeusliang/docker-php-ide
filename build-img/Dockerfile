@@ -9,6 +9,13 @@ EXPOSE 8080 8081
 ADD ctl.tar.gz_aa .
 # RUN ls -Fl /var/www/html
 RUN \
+# 安装pdo的mysql扩展
+	docker-php-source extract && \
+    docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd && \
+    docker-php-ext-install pdo_mysql && \
+    docker-php-ext-enable pdo_mysql && \
+    docker-php-source delete; \
+# 创建逻辑卷volume
 	mkdir /var/www/html/wx/; \
 # 开启apache路由重写模块
 	ln -s /etc/apache2/mods-available/rewrite.load /etc/apache2/mods-enabled/rewrite.load; \
